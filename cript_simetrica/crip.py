@@ -77,7 +77,8 @@ def main():
             with open(encrypted_file_name, "rb") as encrypted_file:
                 encrypted_data = encrypted_file.read()
                 decrypted_data = decrypt_des_bin(encrypted_data, key)
-                decrypted_file_name = encrypted_file_name[:-4]  # Remove a extensão ".enc"
+                decrypted_file_name, file_extension, _ = encrypted_file_name.split('.')  # Remove a extensão ".enc"
+                decrypted_file_name = decrypted_file_name + "2." + file_extension
                 with open(decrypted_file_name, "wb") as decrypted_file:
                     decrypted_file.write(decrypted_data)
                 print("Arquivo descriptografado salvo como:", decrypted_file_name)
