@@ -23,8 +23,9 @@ def main():
         print("2. Criptografar texto digitado no console")
         print("3. Criptografar texto de um arquivo de texto")
         print("4. Criptografar arquivo binário")
-        print("5. Sair")
-
+        print("5. Descriptografar um arquivo")
+        print("6. Sair")
+        
         choice = input("Escolha uma opção: ")  # Recebe a escolha do usuário
 
         if choice == "1":
@@ -47,18 +48,17 @@ def main():
                     encrypted_file.write(encrypted_data)  # Salva os dados criptografados no arquivo
                 print("Arquivo criptografado salvo como:", encrypted_file_name)  # Exibe o nome do arquivo criptografado
 
-        elif choice == "4":
-            file_name = input("Digite o nome do arquivo binário: ")  # Recebe o nome do arquivo binário
-            with open(file_name, "rb") as file:
-                binary_data = file.read()  # Lê o conteúdo do arquivo binário
-                encrypted_data = encrypt_des(binary_data, key)  # Chama a função de criptografia
-                encrypted_file_name = file_name + ".enc"  # Gera o nome do arquivo criptografado
-                with open(encrypted_file_name, "wb") as encrypted_file:
-                    encrypted_file.write(encrypted_data)  # Salva os dados criptografados no arquivo
-                print("Arquivo criptografado salvo como:", encrypted_file_name)  # Exibe o nome do arquivo criptografado
-
         elif choice == "5":
-            break  # Encerra o loop
+            encrypted_file_name = input("Digite o nome do arquivo criptografado: ")
+            with open(encrypted_file_name, "rb") as encrypted_file:
+                encrypted_data = encrypted_file.read()
+                decrypted_data = decrypt_des(encrypted_data, key)
+                decrypted_file_name = encrypted_file_name[:-4]  # Remove a extensão ".enc"
+                with open(decrypted_file_name, "wb") as decrypted_file:
+                    decrypted_file.write(decrypted_data)
+                print("Arquivo descriptografado salvo como:", decrypted_file_name)
+        elif choice == "6":
+            break
 
 if __name__ == "__main__":
     main()  # Chama a função principal ao executar o script
