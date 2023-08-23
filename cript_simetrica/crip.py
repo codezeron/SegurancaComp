@@ -11,7 +11,7 @@ def encrypt_des(data, key):
 def decrypt_des(encrypted_data, key):
     cipher = DES.new(key.encode(), DES.MODE_ECB)  # Cria um objeto DES com a chave e o modo ECB
     decrypted_data = unpad(cipher.decrypt(encrypted_data), DES.block_size)  # Descriptografa e remove o preenchimento
-    return decrypted_data.decode()  # Retorna os dados descriptografados como string
+    return decrypted_data  
 
 
 def main():
@@ -23,9 +23,9 @@ def main():
         print("2. Criptografar texto digitado no console")
         print("3. Criptografar texto de um arquivo de texto")
         print("4. Criptografar arquivo binário")
-        print("5. Descriptografar um arquivo")
+        print("5. Descriptografar arquivo binário")
         print("6. Sair")
-        
+
         choice = input("Escolha uma opção: ")  # Recebe a escolha do usuário
 
         if choice == "1":
@@ -48,6 +48,16 @@ def main():
                     encrypted_file.write(encrypted_data)  # Salva os dados criptografados no arquivo
                 print("Arquivo criptografado salvo como:", encrypted_file_name)  # Exibe o nome do arquivo criptografado
 
+        elif choice == "4":
+            file_name = input("Digite o nome do arquivo binário: ")  # Recebe o nome do arquivo binário
+            with open(file_name, "rb") as file:
+                binary_data = file.read()  # Lê o conteúdo do arquivo binário
+                encrypted_data = encrypt_des(binary_data, key)  # Chama a função de criptografia
+                encrypted_file_name = file_name + ".enc"  # Gera o nome do arquivo criptografado
+                with open(encrypted_file_name, "wb") as encrypted_file:
+                    encrypted_file.write(encrypted_data)  # Salva os dados criptografados no arquivo
+                print("Arquivo criptografado salvo como:", encrypted_file_name)  # Exibe o nome do arquivo criptografado
+
         elif choice == "5":
             encrypted_file_name = input("Digite o nome do arquivo criptografado: ")
             with open(encrypted_file_name, "rb") as encrypted_file:
@@ -59,6 +69,5 @@ def main():
                 print("Arquivo descriptografado salvo como:", decrypted_file_name)
         elif choice == "6":
             break
-
 if __name__ == "__main__":
     main()  # Chama a função principal ao executar o script
