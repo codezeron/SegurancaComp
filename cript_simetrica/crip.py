@@ -1,21 +1,21 @@
 from Crypto.Cipher import DES
 from Crypto.Util.Padding import pad, unpad
 
+key = b'12345678'  # Recebe a chave criptográfica do usuário de 8 caracteres (8bytes)
 #Função para criptografar dados usando DES
 def encrypt_des(data, key):
-    cipher = DES.new(key.encode(), DES.MODE_ECB)  # Cria um objeto DES com a chave e o modo ECB
+    cipher = DES.new(key, DES.MODE_ECB)  # Cria um objeto DES com a chave e o modo ECB
     encrypted_data = cipher.encrypt(pad(data, DES.block_size))  # Criptografa os dados após preenchimento
     return encrypted_data
 
 # Função para descriptografar dados usando DES
 def decrypt_des(encrypted_data, key):
-    cipher = DES.new(key.encode(), DES.MODE_ECB)  # Cria um objeto DES com a chave e o modo ECB
-    decrypted_data = unpad(cipher.decrypt(encrypted_data), DES.block_size)  # Descriptografa e remove o preenchimento
+    cipher = DES.new(key, DES.MODE_ECB)  # Cria um objeto DES com a chave e o modo ECB
+    decrypted_data = cipher.decrypt(encrypted_data)  # Descriptografa e remove o preenchimento
     return decrypted_data  
 
 
 def main():
-    key = input("Digite a chave criptográfica: ")  # Recebe a chave criptográfica do usuário de 8 caracteres (8bytes)
 
     while True:
         print("\nMenu:")
