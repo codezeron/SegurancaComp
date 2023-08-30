@@ -33,11 +33,12 @@ def decrypt_aes(encrypted_data, key, mode):
 
 
 def main():
-    key_length = int(input("Escolha o tamanho da chave (128 ou 256): "))
-    if key_length not in (128, 256):
-        print("Tamanho de chave inválido.")
-        return
-       
+    key_length = 0
+    while (key_length not in (128, 256)):
+        key_length = int(input("Escolha o tamanho da chave (128 ou 256): "))
+        if key_length not in (128, 256):
+            print("Tamanho de chave inválido.")
+               
     global key
     key = get_random_bytes(key_length // 8)  # Chave em bytes
 
