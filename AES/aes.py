@@ -3,19 +3,32 @@ from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 
+iv_8 = get_random_bytes(8)
+iv_16 = get_random_bytes(16)
+
 
 def encrypt_aes(data, key, mode):
-    cipher = AES.new(key, mode)
+    global cipher
+    if mode == AES.MODE_ECB:
+        cipher = AES.new(key, mode)
+    elif mode in (AES.MODE_CBC, AES.MODE_CFB, AES.MODE_OFB):
+        cipher = AES.new(key, mode, iv=iv_16)
+    elif mode == AES.MODE_CTR:
+        cipher = AES.new(key, mode, initial_value=iv_8)
     encrypted_data = cipher.encrypt(pad(data, AES.block_size))
     return encrypted_data
 
 
 def decrypt_aes(encrypted_data, key, mode):
-    cipher = AES.new(key, mode)
-    if mode in [AES.MODE_CBC, AES.MODE_CFB]:
-        decrypted_data = unpad(cipher.decrypt(encrypted_data), AES.block_size)
-    else:
-        decrypted_data = cipher.decrypt(encrypted_data)
+    global cipher
+    if mode == AES.MODE_ECB:
+        cipher = AES.new(key, mode)
+    elif mode in (AES.MODE_CBC, AES.MODE_CFB, AES.MODE_OFB):
+        cipher = AES.new(key, mode, iv=iv_16)
+    elif mode == AES.MODE_CTR:
+        cipher = AES.new(key, mode, initial_value=iv_8, nonce=cipher.nonce)
+    decrypted_data = unpad(cipher.decrypt(encrypted_data), AES.block_size)
+
     return decrypted_data
 
 
@@ -24,7 +37,8 @@ def main():
     if key_length not in (128, 256):
         print("Tamanho de chave inválido.")
         return
-
+       
+    global key
     key = get_random_bytes(key_length // 8)  # Chave em bytes
 
     data = b"Texto para criptografar e descriptografar"
