@@ -1,6 +1,8 @@
 {
     "python.linting.flake8Enabled": false,
     "python.linting.mypyEnabled": false,
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+    "python.linting.pylintEnabled": false,
+    "python.linting.enabled": true,
+    "python.linting.prospectorEnabled": true,
+    "python.linting.pycodestyleEnabled": false
 }
