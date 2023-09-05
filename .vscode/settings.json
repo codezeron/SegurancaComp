@@ -4,5 +4,9 @@
     "python.linting.pylintEnabled": false,
     "python.linting.enabled": true,
     "python.linting.prospectorEnabled": true,
-    "python.linting.pycodestyleEnabled": false
+    "python.linting.pycodestyleEnabled": false,
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "python.formatting.provider": "none"
 }
