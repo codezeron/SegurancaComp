@@ -72,8 +72,7 @@ def autentication(chave_privada):
         dados_criptografados_io.seek(0)  # Volte ao início do BytesIO
         mensagem_info.size = len(dados_criptografados_io.getvalue())
         tar.addfile(mensagem_info, fileobj=dados_criptografados_io)
-        print(len(assinatura_ec).to_bytes(1,byteorder='big'))
-        print(dados_criptografados_io.getvalue())
+        
     print("\nArquivo criptografado salvo como 'dados.tar'\n")
   
 

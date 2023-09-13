@@ -1,9 +1,10 @@
 import hashlib
 import tarfile
-from cryptography.fernet import Fernet
 from io import BytesIO
 
-#arrumar o codigo
+from cryptography.fernet import Fernet
+
+# arrumar o codigo
 
 # Solicite a mensagem de texto claro do usuário
 mensagem_claro = input("Digite sua mensagem de texto claro: ").encode('utf-8')
@@ -15,11 +16,13 @@ mensagem_hash = hashlib.sha256(mensagem_claro).digest()
 chave = Fernet.generate_key()
 fernet = Fernet(chave)
 
+
 def autentication():
-    
+
     # Crie um objeto BytesIO para armazenar os dados criptografados
     dados_criptografados_io = BytesIO()
-    dados_criptografados_io.write(fernet.encrypt(mensagem_claro) + mensagem_hash)
+    dados_criptografados_io.write(
+        fernet.encrypt(mensagem_hash) + mensagem_claro)
 
     # Crie um arquivo tar e adicione os dados criptografados a ele
     with tarfile.open('dados.tar', 'w') as tar:
@@ -29,7 +32,6 @@ def autentication():
         tar.addfile(mensagem_info, fileobj=dados_criptografados_io)
 
     print("\nArquivo criptografado salvo como 'dados.tar'\n")
-  
 
 
 def verification():
@@ -43,26 +45,24 @@ def verification():
                 dados_criptografados = arquivo_criptografado.read()
 
         # Descriptografar a mensagem criptografada
+        hash_extraido_cript = dados_criptografados[:-len(mensagem_claro)]
         
-        hash_extraido = dados_criptografados[-32:]
-        
-        # Extrair o texto claro do  hash que sao os ultimos 32 bytes
-        mensagem_cifrada = dados_criptografados[:-32]
+        hash_extraido = fernet.decrypt(hash_extraido_cript)
 
+        texto_claro = dados_criptografados[-len(mensagem_claro):]
         # Extrair o hash
-        texto_claro = fernet.decrypt(mensagem_cifrada)
-        
+
         # Calcular o hash da mensagem de texto claro e verificar a autenticidade
         hasher = hashlib.sha256()
         hasher.update(texto_claro)
         mensagem_hash_calculado = hasher.digest()
-        
+
         if hash_extraido == mensagem_hash_calculado:
             print("Mensagem autenticada com sucesso!")
             print("Mensagem de texto claro:", texto_claro.decode('utf-8'))
         else:
             print("A mensagem não pôde ser autenticada.")
-            
+
 
 autentication()
 verification()
