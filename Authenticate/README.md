@@ -1,7 +1,7 @@
 
 ## Trabalho 4
 
-mplementar as formas de autenticação apresentadas na imagem em anexo. Podem reaproveitar o código das atividades anteriores e fazer as devidas adaptações/atualizações.
+Implementar as formas de autenticação apresentadas na imagem em anexo. Podem reaproveitar o código das atividades anteriores e fazer as devidas adaptações/atualizações.
 
 Requisito:
 Instalar a biblioteca cryptography 41.0.3 ou acima
